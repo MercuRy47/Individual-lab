@@ -23,9 +23,9 @@ public class StoreManager {
         try(BufferedReader readFile = new BufferedReader(new FileReader(path))){
             String line;
             while((line = readFile.readLine()) != null) {
-                if(path.equalsIgnoreCase("SE_STORE_4/PRODUCT.txt")){
+                if(path.equalsIgnoreCase("Individual Lab/SE_STORE_4/PRODUCT.txt")){
                     dataProduct.add(line);
-                }else if(path.equalsIgnoreCase("SE_STORE_4/CATEGORY.txt")){
+                }else if(path.equalsIgnoreCase("Individual Lab/SE_STORE_4/CATEGORY.txt")){
                     dataCategory.add(line);
                 }
             }
@@ -33,13 +33,13 @@ public class StoreManager {
             e.printStackTrace();
         }
 
-        if(path.equalsIgnoreCase("SE_STORE_4/PRODUCT.txt")){
+        if(path.equalsIgnoreCase("Individual Lab/SE_STORE_4/PRODUCT.txt")){
             products = new Product[dataProduct.size()];
             for(int i = 0; i < dataProduct.size(); i++) {
                 String[] parts = dataProduct.get(i).split("\\s+");
                 products[i] = new Product(parts[0], parts[1], Double.parseDouble(parts[2].replace("$", "")), Integer.parseInt(parts[3]), parts[4]);
             }
-        }else if(path.equalsIgnoreCase("SE_STORE_4/CATEGORY.txt")){
+        }else if(path.equalsIgnoreCase("Individual Lab/SE_STORE_4/CATEGORY.txt")){
             categories = new Category[dataCategory.size()];
             for(int i = 0; i < dataCategory.size(); i++) {
                 String[] parts = dataCategory.get(i).split("\\s+", 2);

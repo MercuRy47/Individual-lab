@@ -3,7 +3,7 @@
 /* Student ID: 66160237
 /* Student Name: Wanasart Nianthasat
 /* Date: 07/09/2024
-/* Description: เพิ่มระบบ Login เข้ามา
+/* Description: เพิ่มระบบ Login
 /*************************************************************************************/
 package SE_STORE_4;
 
@@ -15,6 +15,7 @@ public class SEStore {
     private String index, email, password;
     private Scanner input;
 
+    // แสดง Display ตัวเลือกหน้า login
     public void loginDisplay(){
         this.input = new Scanner(System.in);
         while (true) {
@@ -33,6 +34,7 @@ public class SEStore {
         }
     }
 
+    // แสดง Display หน้า login form
     public void loginForm(){
         UserManager userManager = new UserManager();
         userManager.loadUserFromFile();
@@ -58,8 +60,8 @@ public class SEStore {
         System.out.println("Sorry, Please try again later :(");
     }
 
-    // แสดง Display#1
-    public void showOptions_dis1() {
+    // แสดง Display เลือก Category | logout
+    public void showOptions_dis1() { 
         this.input = new Scanner(System.in);
         while (true) {
             System.out.printf("1. Show Category\n2. Logout\n====================\nSelect (1-2) : ");
@@ -77,36 +79,39 @@ public class SEStore {
         }
     }
 
-    // แสดง Display#2
+    // แสดง Display สำหรับใส่ตัวเลือกใน Category
     public void showOptions_dis2(){
         this.input = new Scanner(System.in);
         StoreManager store = new StoreManager();
-        store.loadProductFromFile("SE_STORE_4/CATEGORY.txt");
+        store.loadProductFromFile("Individual Lab/SE_STORE_4/CATEGORY.txt");
         System.out.printf("Select Category to Show Product (1-%d) or Q for exit" + "\nSelect : ", store.dataCategory.size());
         this.index = input.next();
     }
 
-    // แสดง Display#3
+    // แสดง Display สำหรับออก
     public void showOptions_dis3(){
         this.input = new Scanner(System.in);
         System.out.printf("Press Q to Exit\n");
         this.index = input.next();
     }
+    
+    /////<----- Main Head ----->/////
     public static void main(String[] args) {
         SEStore seStore = new SEStore();        
         StoreManager store = new StoreManager();
         UserManager userManager = new UserManager();
 
-        // Load data
-        store.loadProductFromFile("SE_STORE_4/PRODUCT.txt");
-        store.loadProductFromFile("SE_STORE_4/CATEGORY.txt");
+        // Load File
+        store.loadProductFromFile("Individual Lab/SE_STORE_4/PRODUCT.txt");
+        store.loadProductFromFile("Individual Lab/SE_STORE_4/CATEGORY.txt");
         userManager.loadUserFromFile();
 
         while(true) {
-            // Login
+            // Login Show
             seStore.loginDisplay();
 
             if(seStore.choose == 1){
+                // Login Form
                 seStore.loginForm();
 
                 while(true) {
@@ -122,12 +127,13 @@ public class SEStore {
                             store.printAllCategories();
                             seStore.showOptions_dis2();
         
-                            // Load datat
-                            store.loadProductFromFile("SE_STORE_4/PRODUCT.txt");
-                            store.loadProductFromFile("SE_STORE_4/CATEGORY.txt");
+                            // Load File
+                            store.loadProductFromFile("Individual Lab/SE_STORE_4/PRODUCT.txt");
+                            store.loadProductFromFile("Individual Lab/SE_STORE_4/CATEGORY.txt");
                             if(seStore.index.equalsIgnoreCase("Q")){
                                 break;
                             }else {  
+                                // Search Category by ID
                                 store.searchCategoryId(store.categories[(Integer.parseInt(seStore.index) - 1)].getCategoryId());
                                 while(true) {
                                     seStore.showOptions_dis3();
@@ -146,6 +152,6 @@ public class SEStore {
                 System.exit(0);
             }
         }
-        /// End ///
+        /////<----- Main End ----->/////
     }
 }

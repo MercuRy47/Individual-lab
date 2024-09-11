@@ -10,9 +10,10 @@ public class UserManager {
     public Member[] users;
     public List<String> dataMember = new ArrayList<>();
 
+    // โหลดข้อมูล Member ทั้งหมดจากไฟล์
     public void loadUserFromFile(){
         this.dataMember = new ArrayList<>();
-        try(BufferedReader readFile = new BufferedReader(new FileReader("SE_STORE_4/MEMBER.txt"))){
+        try(BufferedReader readFile = new BufferedReader(new FileReader("Individual Lab/SE_STORE_4/MEMBER.txt"))){
             String line;
             while((line = readFile.readLine()) != null) {
                 dataMember.add(line);
@@ -28,6 +29,7 @@ public class UserManager {
         }
     }
 
+    // Check ว่าบัญชีผู้ใช้นั้น เข้าใช้ได้หรือไม่
     public boolean CheckStatus(String email){
         for(Member user: users){
             if(email.equals(user.getEmail())){
@@ -39,6 +41,7 @@ public class UserManager {
         return false;
     }
 
+    // Check ว่า Email กับ Password ตรงกับข้อมูลใน Data base หรือไม่
     public boolean CheckLogin(String email, String password){
         if(CheckEmail(email) && CheckPassword(password)){
             return true;
@@ -46,6 +49,7 @@ public class UserManager {
         return false;
     }
 
+    // ถอดรหัสจากใน Data base เป็นรหัสใช้ Login
     public String Decode(String password){
         String decode = "";
         for(int i = 0; i < password.length(); i++){
@@ -56,11 +60,13 @@ public class UserManager {
         return decode;
     }
 
+    // เปลี่ยน format ขอชื่อ
     public String NewName(String fname, String lname){
         String newName = lname.charAt(0) + ". " + fname;
         return newName;
     }
 
+    // Sensor Email
     public String SensorEmail(String email){
         String sensorEmail = "";
         String[] parts = email.split("@");
@@ -84,6 +90,7 @@ public class UserManager {
         return sensorEmail;
     }
 
+    // เปลี่ยน format ของเบอร์โทร
     public String NewTel(String tel){
         String newTel = "";
         for(int i = 0; i < tel.length(); i++){
@@ -95,6 +102,7 @@ public class UserManager {
         return newTel;
     }
 
+    // แสดงข้อมูลบัญชีผู้ใช้ที่กรอกเข้ามา
     public void printInfo(String email, String password){
         for(Member user : users){
             if(email.equals(user.getEmail()) && password.equals(Decode(user.getCodePassword()))) {
@@ -109,6 +117,7 @@ public class UserManager {
         }
     }
 
+    // แสดงข้อมูลบัญชีผู้ใช้ทั้งหมด ที่มีใน Data base
     public void printAllInfo(){
         for(Member user : users){
             System.out.println("===== SE STORE =====");
@@ -121,6 +130,7 @@ public class UserManager {
         }
     }
 
+    // Check ว่า Email ตรงกับที่มีอยู่ใน Data base หรือไม่
     public boolean CheckEmail(String email){
         for (Member user : users) {
             if(user.getEmail().equals(email)){
@@ -130,6 +140,7 @@ public class UserManager {
         return false;
     }
 
+    // Check ว่า Password ถูกต้องหรือไม่
     public boolean CheckPassword(String password){
         for (Member user : users) {
             if(Decode(user.getCodePassword()).equals(password)){
