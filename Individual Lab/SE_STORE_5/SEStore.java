@@ -154,6 +154,7 @@ public class SEStore {
 
                 for(int i = 0; i < userManager.users.length; i++){
                     if(userManager.users[i].getEmail().equalsIgnoreCase(seStore.emailLogin)){
+                        /////< STAFF (Head) >/////
                         if(userManager.users[i].getRole().equalsIgnoreCase("Staff")){
                             while(true) {
                                 userManager.printInfo(seStore.emailLogin, seStore.passwordLogin);
@@ -184,7 +185,7 @@ public class SEStore {
                                 else if(seStore.choose == 2){
                                     // Add Member
                                     seStore.addMember_dis();
-                                    if(seStore.firstName.length() <= 2 || seStore.lastName.length() <= 2 || (seStore.email.length() <= 2 || seStore.email.contains("@")) || seStore.tel.length() != 10){
+                                    if(seStore.firstName.length() <= 2 || seStore.lastName.length() <= 2 || (seStore.email.length() <= 2 || !seStore.email.contains("@")) || seStore.tel.length() != 10){
                                         System.out.println("Error! - Your Information are Incorrect!");
                                     }else {
                                         userManager.creatNewUser(seStore.firstName, seStore.lastName, seStore.email, seStore.tel);
@@ -198,6 +199,8 @@ public class SEStore {
                             }
 
                         }
+                        /////< STAFF (End) >/////
+                        /////< OTHER ROLE (Head) >/////
                         else {
                             while(true) {
                                 userManager.printInfo(seStore.emailLogin, seStore.passwordLogin);
@@ -229,6 +232,7 @@ public class SEStore {
                                 }
                             }
                         }
+                        /////< OTHER ROLE (End) >/////
                     }  
                 }
             }else if(seStore.choose == 2){
