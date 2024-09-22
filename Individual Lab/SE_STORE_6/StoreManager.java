@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class StoreManager {
@@ -83,26 +83,25 @@ public class StoreManager {
     // แสดงข้อมูลทั้งหมดตาม CategoryID นั้นๆ
     public void searchCategoryId(String choose) {
         this.choose = choose;
-        String format = "%-5s %-15s %-10s %-10s%n";
+        String format = "%-5s %-12s %-10s %-10s%n";
         System.out.println("============ Snacks ============");
         System.out.printf(format, "#", "Name", "Price (฿)", "Quantity");
         int index = 1;
         for(Product product: products){
             if(product.getCategoryId().equalsIgnoreCase(choose)){
-                System.out.printf("%-5d %-15s %-9.2f %-10d%n", index, product.getName(), product.getPrice()*34, product.getQuantity());
+                System.out.printf("%-5d %-12s %-10.2f %-10d%n", index, product.getName(), product.getPrice()*34, product.getQuantity());
             index++;
             }
         }
         System.out.println("===========================================");
     }
 
-    // แสดงข้อมูลทั้งหมดตาม CategoryID นั้นๆ
     public void searchCategoryId_role(String choose, String role) {
         this.choose = choose;
     
         // ปรับฟอร์แมตสำหรับหัวตารางและข้อมูลแถว
-        String formatHeader = "%-5s %-15s %-20s %-10s%n"; // ฟอร์แมตหัวตาราง
-        String formatRow = "%-5d %-15s %-10.2f (%6.2f) %-10d%n"; // ฟอร์แมตแถวข้อมูล
+        String formatHeader = "%-5s %-12s %-18s %-15s%n"; // ฟอร์แมตหัวตาราง
+        String formatRow = "%-5d %-12s %-6.2f (%6.2f) %5d%n"; // ฟอร์แมตแถวข้อมูล
         
         System.out.println("======== Meat & Seafood ========");
         System.out.printf(formatHeader, "#", "Name", "Price (฿)", "Quantity");
@@ -143,144 +142,70 @@ public class StoreManager {
     public void searchCategoryId_role_DESC(String choose, String role) {
         this.choose = choose;
     
-        // ปรับฟอร์แมตสำหรับหัวตารางและข้อมูลแถว
-        String formatHeader = "%-5s %-15s %-20s %-10s%n"; // ฟอร์แมตหัวตาราง
-        String formatRow = "%-5d %-15s %-10.2f (%6.2f) %-10d%n"; // ฟอร์แมตแถวข้อมูล
+        String formatHeader = role.equalsIgnoreCase("Silver") || role.equalsIgnoreCase("Gold") ?
+                "%-5s %-12s %-18s %-15s%n" : "%-5s %-12s %-10s %-10s%n";
+        String formatRow = role.equalsIgnoreCase("Staff") || role.equalsIgnoreCase("Regular") ?
+                "%-5d %-12s %-10.2f %-10d%n" : "%-5d %-12s %-6.2f (%6.2f) %5d%n";
     
-        // สร้าง list ใหม่ที่มีเฉพาะ products ตาม CategoryId ที่เลือก
-        List<Product> filteredProducts = new ArrayList<>();
-        for (Product product : products) {
-            filteredProducts.add(product);
-        }
+        // สร้างอาร์เรย์ใหม่เพื่อเรียงข้อมูล
+        Product[] filteredProducts = Arrays.stream(products)
+                .sorted(Comparator.comparing(Product::getName, Comparator.reverseOrder())
+                .thenComparing(Product::getQuantity, Comparator.reverseOrder()))
+                .toArray(Product[]::new);
     
-        // เรียงลำดับตามชื่อ (Name) จาก Z ถึง A และถ้าชื่อเท่ากันให้เรียงตามจำนวน (Quantity) จากมากไปน้อย
-        Collections.sort(filteredProducts, new Comparator<Product>() {
-            @Override
-            public int compare(Product p1, Product p2) {
-                int nameComparison = p2.getName().compareToIgnoreCase(p1.getName()); // เรียงตามชื่อ (Z-A)
-                if (nameComparison != 0) {
-                    return nameComparison; // ถ้าชื่อไม่เท่ากันให้เรียงตามชื่อ
-                }
-                return Integer.compare(p2.getQuantity(), p1.getQuantity()); // ถ้าชื่อเท่ากันให้เรียงตามจำนวน (มากไปน้อย)
-            }
-        });
+        System.out.println("======== Meat & Seafood ========");
+        System.out.printf(formatHeader, "#", "Name", "Price (฿)", "Quantity");
     
         int index = 1;
-        
-        System.out.println("======== Meat & Seafood ========");
-        if(!role.equalsIgnoreCase("Silver") || !role.equalsIgnoreCase("Gold")){
-            formatHeader = "%-5s %-15s %-10s %-10s%n";
-        }
-        System.out.printf(formatHeader, "#", "Name", "Price (฿)", "Quantity");
         for (Product product : filteredProducts) {
             double priceInBaht = product.getPrice() * 34;
-            double discountedPrice = priceInBaht;
+            double discountedPrice = role.equalsIgnoreCase("Silver") ? priceInBaht * 0.95 :
+                    role.equalsIgnoreCase("Gold") ? priceInBaht * 0.9 : priceInBaht;
     
-            if (role.equalsIgnoreCase("Silver")) {
-                discountedPrice -= priceInBaht * 0.05; // ส่วนลดสำหรับ Silver
-            } else if (role.equalsIgnoreCase("Gold")) {
-                discountedPrice -= priceInBaht * 0.1; // ส่วนลดสำหรับ Gold
-            } else if(role.equalsIgnoreCase("Staff") || role.equalsIgnoreCase("Regular")){
-                formatRow = "%-5d %-15s %-9.2f %-10d%n";
-            }
-    
-            if(role.equalsIgnoreCase("Staff") || role.equalsIgnoreCase("Regular")){
-                if (product.getCategoryId().equalsIgnoreCase(choose)) {
-                    System.out.printf(formatRow, 
-                        index, 
-                        product.getName(), 
-                        priceInBaht,  // ราคาหลังส่วนลด
-                        product.getQuantity() // จำนวน
-                    );
-                    index++;
-                }
-            }else if(role.equalsIgnoreCase("Silver") || role.equalsIgnoreCase("Gold")){
-                if (product.getCategoryId().equalsIgnoreCase(choose)) {
-                    System.out.printf(formatRow, 
-                        index, 
-                        product.getName(), 
-                        discountedPrice,  // ราคาหลังส่วนลด
-                        priceInBaht,      // ราคาปกติในวงเล็บ
-                        product.getQuantity() // จำนวน
-                    );
-                    index++;
+            if (product.getCategoryId().equalsIgnoreCase(choose)) {
+                if (role.equalsIgnoreCase("Silver") || role.equalsIgnoreCase("Gold")) {
+                    System.out.printf(formatRow, index++, product.getName(), discountedPrice, priceInBaht, product.getQuantity());
+                } else {
+                    System.out.printf(formatRow, index++, product.getName(), priceInBaht, product.getQuantity());
                 }
             }
         }
-    
         System.out.println("================================");
     }
+    
 
     public void searchCategoryId_role_ASC(String choose, String role) {
         this.choose = choose;
-    
-        // ปรับฟอร์แมตสำหรับหัวตารางและข้อมูลแถว
-        String formatHeader = "%-5s %-15s %-20s %-10s%n"; // ฟอร์แมตหัวตาราง
-        String formatRow = "%-5d %-15s %-10.2f (%6.2f) %-10d%n"; // ฟอร์แมตแถวข้อมูล
-    
-        // สร้าง list ใหม่ที่มีเฉพาะ products ตาม CategoryId ที่เลือก
-        List<Product> filteredProducts = new ArrayList<>();
-        for (Product product : products) {
-            filteredProducts.add(product);
-        }
-    
-        // เรียงลำดับจากจำนวน (Quantity) น้อยไปมาก และถ้าจำนวนเท่ากันให้เรียงตามชื่อ (Name)
-        Collections.sort(filteredProducts, new Comparator<Product>() {
-            @Override
-            public int compare(Product p1, Product p2) {
-                int quantityComparison = Integer.compare(p1.getQuantity(), p2.getQuantity());
-                if (quantityComparison != 0) {
-                    return quantityComparison; // ถ้าจำนวนไม่เท่ากันให้เรียงตามจำนวน
-                }
-                return p1.getName().compareToIgnoreCase(p2.getName()); // ถ้าจำนวนเท่ากันให้เรียงตามชื่อ
-            }
-        });
-    
-        int index = 1;
-        
+
+        String formatHeader = role.equalsIgnoreCase("Silver") || role.equalsIgnoreCase("Gold") ?
+                "%-5s %-12s %-18s %-15s%n" : "%-5s %-12s %-10s %-10s%n";
+        String formatRow = role.equalsIgnoreCase("Staff") || role.equalsIgnoreCase("Regular") ?
+                "%-5d %-12s %-10.2f %-10d%n" : "%-5d %-12s %-6.2f (%6.2f) %5d%n";
+
+        // สร้างอาร์เรย์ใหม่เพื่อคัดกรองและเรียงข้อมูล
+        Product[] filteredProducts = Arrays.stream(this.products)
+                .sorted(Comparator.comparingInt(Product::getQuantity)
+                .thenComparing(p -> p.getName().toLowerCase()))
+                .toArray(Product[]::new);
+
         System.out.println("======== Meat & Seafood ========");
-        if(!role.equalsIgnoreCase("Silver") || !role.equalsIgnoreCase("Gold")){
-            formatHeader = "%-5s %-15s %-10s %-10s%n";
-        }
         System.out.printf(formatHeader, "#", "Name", "Price (฿)", "Quantity");
+
+        int index = 1;
         for (Product product : filteredProducts) {
             double priceInBaht = product.getPrice() * 34;
-            double discountedPrice = priceInBaht;
-    
-            if (role.equalsIgnoreCase("Silver")) {
-                discountedPrice -= priceInBaht * 0.05; // ส่วนลดสำหรับ Silver
-            } else if (role.equalsIgnoreCase("Gold")) {
-                discountedPrice -= priceInBaht * 0.1; // ส่วนลดสำหรับ Gold
-            } else if(role.equalsIgnoreCase("Staff") || !role.equalsIgnoreCase("Regular")){
-                formatRow = "%-5d %-15s %-9.2f %-10d%n";
-            }
-            
-            if(role.equalsIgnoreCase("Staff") || role.equalsIgnoreCase("Regular")){
-                if (product.getCategoryId().equalsIgnoreCase(choose)) {
-                    System.out.printf(formatRow, 
-                        index, 
-                        product.getName(), 
-                        priceInBaht,  // ราคาหลังส่วนลด
-                        product.getQuantity() // จำนวน
-                    );
-                    index++;
-                }
-            }else if(role.equalsIgnoreCase("Silver") || role.equalsIgnoreCase("Gold") ){
-                if (product.getCategoryId().equalsIgnoreCase(choose)) {
-                    System.out.printf(formatRow, 
-                        index, 
-                        product.getName(), 
-                        discountedPrice,  // ราคาหลังส่วนลด
-                        priceInBaht,      // ราคาปกติในวงเล็บ
-                        product.getQuantity() // จำนวน
-                    );
-                    index++;
+            double discountedPrice = role.equalsIgnoreCase("Silver") ? priceInBaht * 0.95 :
+                    role.equalsIgnoreCase("Gold") ? priceInBaht * 0.9 : priceInBaht;
+
+            if (product.getCategoryId().equalsIgnoreCase(choose)) {
+                if (role.equalsIgnoreCase("Silver") || role.equalsIgnoreCase("Gold")) {
+                    System.out.printf(formatRow, index++, product.getName(), discountedPrice, priceInBaht, product.getQuantity());
+                } else {
+                    System.out.printf(formatRow, index++, product.getName(), priceInBaht, product.getQuantity());
                 }
             }
         }
-    
         System.out.println("================================");
-    }
-
+    }   
 
 }

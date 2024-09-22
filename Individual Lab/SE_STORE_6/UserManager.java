@@ -49,7 +49,7 @@ public class UserManager {
 
     // Check ว่า Email กับ Password ตรงกับข้อมูลใน Data base หรือไม่
     public boolean CheckLogin(String email, String password){
-        if(CheckEmail(email) && CheckPassword(password)){
+        if(CheckEmail(email) && CheckPassword(password, email)){
             return true;
         }
         return false;
@@ -172,10 +172,14 @@ public class UserManager {
     }
 
     // Check ว่า Password ถูกต้องหรือไม่
-    public boolean CheckPassword(String password){
+    public boolean CheckPassword(String password, String email){
         for (Member user : users) {
-            if(Decode(user.getCodePassword()).equals(password)){
-                return true;
+            if (user.getEmail().equals(email)) {
+                if (Decode(user.getCodePassword()).equals(password)) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
         return false;

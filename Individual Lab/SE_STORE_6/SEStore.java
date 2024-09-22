@@ -3,7 +3,7 @@
 /* Student ID: 66160237
 /* Student Name: Wanasart Nianthasat
 /* Date: 18/09/2024
-/* Description: เพิ่มระบบ 
+/* Description: เพิ่มระบบ แสดงข้อมูลแบบเรียงลำดับ
 /*************************************************************************************/
 package SE_STORE_6;
 
@@ -47,13 +47,18 @@ public class SEStore {
                 this.emailLogin = this.input.next();
                 System.out.print("Password : ");
                 this.passwordLogin = this.input.next();
-                if (userManager.CheckEmail(this.emailLogin) && userManager.CheckPassword(this.passwordLogin)) {
-                    if(userManager.CheckStatus(this.emailLogin)) return;
-                    return;
+                if (userManager.CheckEmail(this.emailLogin) && userManager.CheckPassword(this.passwordLogin, this.emailLogin)) {
+                    if(userManager.CheckStatus(this.emailLogin)) {
+                        System.out.println("Error! - Your Account are Expired!");
+                        loginDisplay();
+                    }else {
+                        return;
+                    }
+                }else {
+                    this.num++;
+                    System.out.println("====================");
+                    System.out.printf("Error! - Email or Password is Incorrect (%d)\n", this.num);
                 }
-                this.num++;
-                System.out.println("====================");
-                System.out.printf("Error! - Email or Password is Incorrect (%d)\n", this.num);
             }
         }
         System.out.println("Sorry, Please try again later :(");
