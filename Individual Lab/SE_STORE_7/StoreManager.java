@@ -1,4 +1,4 @@
-package SE_STORE_6;
+package SE_STORE_7;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import SE_STORE_7.Category;
-import SE_STORE_7.Product;
+import SE_STORE_6.Category;
+import SE_STORE_6.Product;
 
 import java.util.Comparator;
 
@@ -22,8 +22,8 @@ public class StoreManager {
     public List<String> dataCategory = new ArrayList<>();
 
     // Path
-    String pathProduct = "Individual Lab/SE_STORE_6/PRODUCT.txt";
-    String pathCategory = "Individual Lab/SE_STORE_6/CATEGORY.txt";
+    String pathProduct = "Individual Lab/SE_STORE_7/PRODUCT.txt";
+    String pathCategory = "Individual Lab/SE_STORE_7/CATEGORY.txt";
 
     // โหลดข้อมูล Product ทั้งหมดจากไฟล์
     public void loadProductFromFile(String path){
@@ -85,10 +85,10 @@ public class StoreManager {
     }
 
     // แสดงข้อมูลทั้งหมดตาม CategoryID นั้นๆ
-    public void searchCategoryId(String choose) {
+    public void searchCategoryId(String choose, int num) {
         this.choose = choose;
         String format = "%-5s %-12s %-10s %-10s%n";
-        System.out.println("============ Snacks ============");
+        System.out.printf("============ %s ============\n", categories[num].getCategoryName());
         System.out.printf(format, "#", "Name", "Price (฿)", "Quantity");
         int index = 1;
         for(Product product: products){
@@ -100,14 +100,13 @@ public class StoreManager {
         System.out.println("===========================================");
     }
 
-    public void searchCategoryId_role(String choose, String role) {
+    public void searchCategoryId_role(String choose, String role, int num) {
         this.choose = choose;
     
         // ปรับฟอร์แมตสำหรับหัวตารางและข้อมูลแถว
         String formatHeader = "%-5s %-12s %-18s %-15s%n"; // ฟอร์แมตหัวตาราง
         String formatRow = "%-5d %-12s %-7.2f (%7.2f) %5d%n"; // ฟอร์แมตแถวข้อมูล
-        
-        System.out.println("======== Meat & Seafood ========");
+        System.out.printf("======== %s ========\n", categories[num].getCategoryName());
         System.out.printf(formatHeader, "#", "Name", "Price (฿)", "Quantity");
     
         int index = 1;
@@ -143,7 +142,7 @@ public class StoreManager {
         System.out.println("================================");
     }    
 
-    public void searchCategoryId_role_DESC(String choose, String role) {
+    public void searchCategoryId_role_DESC(String choose, String role, int num) {
         this.choose = choose;
     
         String formatHeader = role.equalsIgnoreCase("Silver") || role.equalsIgnoreCase("Gold") ?
@@ -157,7 +156,7 @@ public class StoreManager {
                 .thenComparing(Product::getQuantity, Comparator.reverseOrder()))
                 .toArray(Product[]::new);
     
-        System.out.println("======== Meat & Seafood ========");
+        System.out.printf("======== %s ========\n", categories[num].getCategoryName());
         System.out.printf(formatHeader, "#", "Name", "Price (฿)", "Quantity");
     
         int index = 1;
@@ -178,7 +177,7 @@ public class StoreManager {
     }
     
 
-    public void searchCategoryId_role_ASC(String choose, String role) {
+    public void searchCategoryId_role_ASC(String choose, String role, int num) {
         this.choose = choose;
 
         String formatHeader = role.equalsIgnoreCase("Silver") || role.equalsIgnoreCase("Gold") ?
@@ -192,7 +191,7 @@ public class StoreManager {
                 .thenComparing(p -> p.getName().toLowerCase()))
                 .toArray(Product[]::new);
 
-        System.out.println("======== Meat & Seafood ========");
+        System.out.printf("======== %s ========\n", categories[num].getCategoryName());
         System.out.printf(formatHeader, "#", "Name", "Price (฿)", "Quantity");
 
         int index = 1;

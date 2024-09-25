@@ -1,4 +1,4 @@
-package SE_STORE_6;
+package SE_STORE_7;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,14 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import SE_STORE_7.Member;
-
 public class UserManager {
     public Member[] users;
     public List<String> dataMember = new ArrayList<>();
 
     // Path
-    private String pathMember = "Individual Lab/SE_STORE_6/MEMBER.txt";
+    private String pathMember = "Individual Lab/SE_STORE_7/MEMBER.txt";
     
     // โหลดข้อมูล Member ทั้งหมดจากไฟล์
     public void loadUserFromFile(){
@@ -238,5 +236,30 @@ public class UserManager {
             }
         newPassword = sb.toString();
         return newPassword;
+    }
+
+    public void printAllMember(){
+        String format = "%-5s %-30s %-10s%n";
+        System.out.println("===== SE STORE's Member =====");
+        System.out.printf(format, "#", "Name", "Email");
+        int index = 1;
+        for(Member user: users){
+            System.out.printf(format, index, user.getFirstName() + " " + user.getLastName(), user.getEmail());
+            index++;
+        }
+        System.out.println("===========================================");
+    }
+
+    public void updateFile_edit(){
+        Member[] backUpUsers = users;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathMember, false))) {
+            for (int i = 0; i < dataMember.size(); i++) {
+                String newUserID = String.valueOf(9001 + i);
+                backUpUsers[i].setID(newUserID);
+                writer.write(newUserID + "\t" + backUpUsers[i].getFirstName() + "\t" + backUpUsers[i].getLastName() + "\t" + backUpUsers[i].getEmail() + "\t" + backUpUsers[i].getCodePassword() + "\t" + backUpUsers[i].getTel() + "\t" + backUpUsers[i].getPoint() + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
