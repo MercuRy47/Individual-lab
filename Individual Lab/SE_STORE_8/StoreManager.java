@@ -1,14 +1,13 @@
-package SE_STORE_7;
+package SE_STORE_8;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import SE_STORE_6.Category;
-import SE_STORE_6.Product;
 
 import java.util.Comparator;
 
@@ -22,8 +21,8 @@ public class StoreManager {
     public List<String> dataCategory = new ArrayList<>();
 
     // Path
-    String pathProduct = "Individual Lab/SE_STORE_7/PRODUCT.txt";
-    String pathCategory = "Individual Lab/SE_STORE_7/CATEGORY.txt";
+    String pathProduct = "Individual Lab/SE_STORE_8/PRODUCT.txt";
+    String pathCategory = "Individual Lab/SE_STORE_8/CATEGORY.txt";
 
     // โหลดข้อมูล Product ทั้งหมดจากไฟล์
     public void loadProductFromFile(String path){
@@ -60,12 +59,12 @@ public class StoreManager {
 
     // แสดงข้อมูลทั้งหมดของสินค้า
     public void printAllProducts() {
-        String format = "%-5s %-15s %-10s %-10s%n";
+        String format = "%-5s %-12s %-10s %-10s%n";
         System.out.println("=========== SE STORE's Products ===========");
-        System.out.printf(format, "#", "Name", "Price", "Quantity");
+        System.out.printf(format, "#", "Name", "Price (฿)", "Quantity");
         int index = 1;
         for(Product product: products){
-            System.out.printf(format, index, product.getName(), "$" + product.getPrice(), product.getQuantity());
+            System.out.printf("%-5d %-12s %-10.2f %-10d%n", index, product.getName(), + product.getPrice()*34, product.getQuantity());
             index++;
         }
         System.out.println("===========================================");
@@ -211,4 +210,14 @@ public class StoreManager {
         System.out.println("================================");
     }   
 
+    public void updateFile_edit(){
+        Product[] backUpProducts = products;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathProduct, false))) {
+            for (int i = 0; i < backUpProducts.length; i++) {
+                writer.write(backUpProducts[i].getId() + "\t" + backUpProducts[i].getName() + "\t" + "$" + backUpProducts[i].getPrice() + "\t" + backUpProducts[i].getQuantity() + "\t" + backUpProducts[i].getCategoryId() + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,18 +1,18 @@
 /************************************************************************************/ 
-/* Program Assignment: SE STORE #7
+/* Program Assignment: SE STORE #8
 /* Student ID: 66160237
 /* Student Name: Wanasart Nianthasat
-/* Date: 25/09/2024
-/* Description: เพิ่มระบบ แก้ไขข้อมูลของ User
+/* Date: 02/10/2024
+/* Description: เพิ่มระบบ แก้ไข Product
 /*************************************************************************************/
-package SE_STORE_7;
+package SE_STORE_8;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class SEStore {
     private int choose, num, chooseSort;
-    private String index, email, tel, firstName, lastName, emailLogin, passwordLogin, role, fullName;
+    private String index, email, tel, firstName, lastName, emailLogin, passwordLogin, role, fullName, nameProduct, quantity;
     private Scanner input;
 
     // แสดง Display ตัวเลือกหน้า login
@@ -87,13 +87,13 @@ public class SEStore {
         this.input = new Scanner(System.in);
         while (true) {
             System.out.printf("1. Show Category\n2. Add Member\n" + //
-                                "3. Edit Member\n4. Logout\n====================\nSelect (1-4) : ");
+                                "3. Edit Member\n4. Edit Product\n5. Logout\n====================\nSelect (1-5) : ");
             try {
                 this.choose = input.nextInt();
-                if (this.choose == 1 || this.choose == 2 || this.choose == 3 || this.choose == 4) {
+                if (this.choose == 1 || this.choose == 2 || this.choose == 3 || this.choose == 4 || this.choose == 5) {
                     break;  // ออกจากลูปเมื่อกรอกข้อมูลถูกต้อง
                 } else {
-                    System.out.println("Error: Please enter 1 or 2.");
+                    System.out.println("Error: Please enter 1 - 5.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Error: You must enter a valid number.");
@@ -106,7 +106,7 @@ public class SEStore {
     public void showOptions_dis2(){
         this.input = new Scanner(System.in);
         StoreManager store = new StoreManager();
-        store.loadProductFromFile("Individual Lab/SE_STORE_7/CATEGORY.txt");
+        store.loadProductFromFile("Individual Lab/SE_STORE_8/CATEGORY.txt");
         System.out.printf("Select Category to Show Product (1-%d) or Q for exit" + "\nSelect : ", store.dataCategory.size());
         this.index = input.next();
     }
@@ -140,6 +140,22 @@ public class SEStore {
         this.index = input.next();
     }
 
+    public void chooseProduct_dis(){
+        StoreManager storeManager = new StoreManager();
+        storeManager.loadProductFromFile("Individual Lab/SE_STORE_8/PRODUCT.txt");
+        System.out.println("Type Product Number, You want to edit or Press Q to Exit");
+        System.out.printf("Select (1-%d) : ", storeManager.products.length);
+        this.index = input.next();
+    }
+
+    public void editProduct_dis(String NameProduct){
+        System.out.printf("==== Edit info of %s ====\nType new info or Hyphen (-) for none edit.\n", NameProduct);
+        System.out.print("Name : ");
+        this.nameProduct = input.next();
+        System.out.print("Quantity (+ or -) : ");
+        this.quantity = input.next();
+    }
+
     public void editMember_dis(String fullName){
         System.out.printf("==== Edit info of %s ====\nType new info or Hyphen (-) for none edit.\n", fullName);
         System.out.print("Firstname : ");
@@ -159,8 +175,8 @@ public class SEStore {
         UserManager userManager = new UserManager();
 
         // Path
-        String pathProduct = "Individual Lab/SE_STORE_7/PRODUCT.txt";
-        String pathCategory = "Individual Lab/SE_STORE_7/CATEGORY.txt";
+        String pathProduct = "Individual Lab/SE_STORE_8/PRODUCT.txt";
+        String pathCategory = "Individual Lab/SE_STORE_8/CATEGORY.txt";
 
         // Load File
         store.loadProductFromFile(pathProduct);
@@ -277,6 +293,61 @@ public class SEStore {
                                     }
                                 }
                                 else if(seStore.choose == 4){
+                                    store.printAllProducts();
+                                    seStore.chooseProduct_dis();
+
+                                    if(seStore.index.equalsIgnoreCase("Q")){
+                                        continue;
+                                    }
+                                    else {
+                                        seStore.choose = Integer.parseInt(seStore.index) - 1;
+                                        seStore.nameProduct = store.products[seStore.choose].getName();
+                                        seStore.editProduct_dis(seStore.nameProduct);
+
+                                        boolean hasError = false;
+                                        String saveNproduct = store.products[seStore.choose].getName();
+                                        int saveQproduct = store.products[seStore.choose].getQuantity();
+
+                                        if (!seStore.nameProduct.equals("-")) {
+                                            store.products[seStore.choose].setName(seStore.nameProduct);
+                                        }
+                                        if (seStore.quantity.charAt(0) == '-') {
+                                            if (seStore.quantity.length() == 1) {
+                                                // ไม่ต้องทำอะไรถ้ามีแค่เครื่องหมายลบตัวเดียว
+                                            } else if (seStore.quantity.length() > 1) {
+                                                hasError = seStore.quantity.contains(".");
+                                                if (!hasError) {
+                                                    // ถ้าไม่มีจุด ('.') ใน email ให้ปรับค่า quantity
+                                                    int newValue = store.products[seStore.choose].getQuantity() - Integer.parseInt(seStore.quantity.substring(1));
+                                                    store.products[seStore.choose].setQuantity(newValue);
+                                                }
+                                            }
+                                        }
+                                        if (seStore.quantity.charAt(0) == '+') {
+                                            hasError = seStore.quantity.contains(".");
+                                            if(seStore.quantity.length() > 1){
+                                                if (!hasError) {
+                                                    int newValue = store.products[seStore.choose].getQuantity() + Integer.parseInt(seStore.quantity.substring(1));
+                                                    store.products[seStore.choose].setQuantity(newValue);
+                                                }
+                                            }else {
+                                                hasError = true;
+                                            }
+                                        }
+
+                                        if (hasError) {
+                                            System.out.println("Error! - Your Information are Incorrect!");
+                                            store.products[seStore.choose].setName(saveNproduct);
+                                            store.products[seStore.choose].setQuantity(saveQproduct);
+                                        } else {
+                                            store.updateFile_edit();
+                                            store.loadProductFromFile(pathProduct);
+                                            System.out.printf("Success - %s has been updated!\n", seStore.nameProduct);
+                                        }
+                                    }
+
+                                }
+                                else if(seStore.choose == 5){
                                     break;
                                 }
                             }

@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import SE_STORE_7.Member;
-
 public class UserManager {
     public Member[] users;
     public List<String> dataMember = new ArrayList<>();

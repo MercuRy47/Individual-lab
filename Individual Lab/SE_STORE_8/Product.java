@@ -1,4 +1,4 @@
-package SE_STORE_7;
+package SE_STORE_8;
 
 public class Product {
     private String id;
@@ -42,4 +42,25 @@ public class Product {
     public String getCategoryId(){
         return this.categoryId;
     }
+
+    public void setId(String id){
+        this.id = id;
+    }
+    
+    public void setName(String name){
+        this.name = name;
+    }
+    
+    public void setPrice(double price){
+        this.price = price;
+    }
+    
+    public void setQuantity(int quantity){
+        this.quantity = quantity;
+    }
+    
+    public void setCategoryId(String categoryId){
+        this.categoryId = categoryId;
+    }
+    
 }

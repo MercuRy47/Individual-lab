@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import SE_STORE_7.Category;
-import SE_STORE_7.Product;
-
 import java.util.Comparator;
 
 public class StoreManager {

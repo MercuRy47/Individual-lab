@@ -1,4 +1,4 @@
-package SE_STORE_7;
+package SE_STORE_8;
 
 public class Member {
     private String memberId;
