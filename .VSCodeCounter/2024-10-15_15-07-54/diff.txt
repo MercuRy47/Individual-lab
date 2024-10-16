@@ -1,0 +1,49 @@
+Date : 2024-10-15 15:07:54
+Directory : /Users/wanasartnianthasat/Documents/GitHub/Individual-lab
+Total : 20 files,  2875 codes, 249 comments, 391 blanks, all 3515 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Java     |         20 |      2,875 |        249 |        391 |      3,515 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                  | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                     |         20 |      2,875 |        249 |        391 |      3,515 |
+| Individual Lab                                                                                        |         20 |      2,875 |        249 |        391 |      3,515 |
+| Individual Lab/SE_STORE_6                                                                             |          1 |          0 |          0 |          1 |          1 |
+| Individual Lab/SE_STORE_7                                                                             |          6 |        823 |         57 |        104 |        984 |
+| Individual Lab/SE_STORE_8                                                                             |          6 |        914 |         59 |        118 |      1,091 |
+| Individual Lab/SE_STORE_9                                                                             |          7 |      1,138 |        133 |        168 |      1,439 |
++-------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                              | language | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_6/StoreManager.java | Java     |          0 |          0 |          1 |          1 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_7/Category.java     | Java     |         19 |          0 |          6 |         25 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_7/Member.java       | Java     |         88 |          0 |          8 |         96 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_7/Product.java      | Java     |         37 |          0 |          9 |         46 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_7/SEStore.java      | Java     |        281 |         33 |         25 |        339 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_7/StoreManager.java | Java     |        174 |          8 |         30 |        212 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_7/UserManager.java  | Java     |        224 |         16 |         26 |        266 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_8/Category.java     | Java     |         19 |          0 |          6 |         25 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_8/Member.java       | Java     |         88 |          0 |          8 |         96 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_8/Product.java      | Java     |         52 |          0 |         15 |         67 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_8/SEStore.java      | Java     |        345 |         35 |         33 |        413 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_8/StoreManager.java | Java     |        186 |          8 |         30 |        224 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_8/UserManager.java  | Java     |        224 |         16 |         26 |        266 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_9/Cart.java         | Java     |         34 |          0 |          5 |         39 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_9/Category.java     | Java     |         19 |          0 |          6 |         25 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_9/Member.java       | Java     |         88 |          0 |          8 |         96 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_9/Product.java      | Java     |         52 |          0 |         15 |         67 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_9/SEStore.java      | Java     |        472 |         37 |         54 |        563 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_9/StoreManager.java | Java     |        249 |         80 |         54 |        383 |
+| /Users/wanasartnianthasat/Documents/GitHub/Individual-lab/Individual Lab/SE_STORE_9/UserManager.java  | Java     |        224 |         16 |         26 |        266 |
+| Total                                                                                                 |          |      2,875 |        249 |        391 |      3,515 |
++-------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

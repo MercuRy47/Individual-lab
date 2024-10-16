@@ -1,11 +1,12 @@
 /************************************************************************************/ 
-/* Program Assignment: SE STORE #8
+/* Program Assignment: SE STORE #9
 /* Student ID: 66160237
 /* Student Name: Wanasart Nianthasat
-/* Date: 02/10/2024
-/* Description: เพิ่มระบบ แก้ไข Product
+/* Date: 10/10/2024
+/* Description: เพิ่มระบบ Order สินค้า
+/* Code 17:30 - 18:46(เงื่อนไขบวก), 19:50 - 20:47
 /*************************************************************************************/
-package SE_STORE_8;
+package SE_STORE_9;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -68,13 +69,13 @@ public class SEStore {
     public void showOptions_dis1() { 
         this.input = new Scanner(System.in);
         while (true) {
-            System.out.printf("1. Show Category\n2. Order\n3. Logout\n====================\nSelect (1-3) : ");
+            System.out.printf("1. Show Category\n2. Order Product\n3. Logout\n====================\nSelect (1-3) : ");
             try {
                 this.choose = input.nextInt();
-                if (this.choose == 1 || this.choose == 2) {
+                if (this.choose == 1 || this.choose == 2 || this.choose == 3)  {
                     break;  // ออกจากลูปเมื่อกรอกข้อมูลถูกต้อง
                 } else {
-                    System.out.println("Error: Please enter 1 or 2.");
+                    System.out.println("Error: Please enter 1 or 3.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Error: You must enter a valid number.");
@@ -106,7 +107,7 @@ public class SEStore {
     public void showOptions_dis2(){
         this.input = new Scanner(System.in);
         StoreManager store = new StoreManager();
-        store.loadProductFromFile("Individual Lab/SE_STORE_8/CATEGORY.txt");
+        store.loadProductFromFile("Individual Lab/SE_STORE_9/CATEGORY.txt");
         System.out.printf("Select Category to Show Product (1-%d) or Q for exit" + "\nSelect : ", store.dataCategory.size());
         this.index = input.next();
     }
@@ -142,7 +143,7 @@ public class SEStore {
 
     public void chooseProduct_dis(){
         StoreManager storeManager = new StoreManager();
-        storeManager.loadProductFromFile("Individual Lab/SE_STORE_8/PRODUCT.txt");
+        storeManager.loadProductFromFile("Individual Lab/SE_STORE_9/PRODUCT.txt");
         System.out.println("Type Product Number, You want to edit or Press Q to Exit");
         System.out.printf("Select (1-%d) : ", storeManager.products.length);
         this.index = input.next();
@@ -167,6 +168,29 @@ public class SEStore {
         System.out.print("Phone : ");
         this.tel = input.next();
     }
+
+    public void order_options(){
+        System.out.println("Enter the product number followed by the quantity.");
+        System.out.println("1. How to Order");
+        System.out.println("2. List Products");
+        System.out.println("Q. Exit");
+    }
+
+    public void input_orderOptions(){
+        System.out.print("Enter : ");
+        this.index = input.next();
+    }
+
+    public void showExample(){
+        System.out.println("How to Order:");
+        System.out.println("To Add Product:");
+        System.out.println("\tEnter the product number followed by the quantity.");
+        System.out.println("\tExample: 1 50 (Adds 50 chips)");
+        System.out.println("To Adjust Quantity:");
+        System.out.println("\t+ to add more items: 1 +50 (Adds 50 more chips)");
+        System.out.println("\t- to reduce items: 1 -50 (Removes 50 chips)");
+    }
+
     
     /////<----- Main Head ----->/////
     public static void main(String[] args) {
@@ -175,12 +199,14 @@ public class SEStore {
         UserManager userManager = new UserManager();
 
         // Path
-        String pathProduct = "Individual Lab/SE_STORE_8/PRODUCT.txt";
-        String pathCategory = "Individual Lab/SE_STORE_8/CATEGORY.txt";
+        String pathProduct = "Individual Lab/SE_STORE_9/PRODUCT.txt";
+        String pathCategory = "Individual Lab/SE_STORE_9/CATEGORY.txt";
+        String pathCart = "Individual Lab/SE_STORE_9/CART.txt";
 
         // Load File
         store.loadProductFromFile(pathProduct);
         store.loadProductFromFile(pathCategory);
+
         userManager.loadUserFromFile();
         userManager.checkRole();
 
@@ -209,6 +235,7 @@ public class SEStore {
                                         // Load File
                                         store.loadProductFromFile(pathProduct);
                                         store.loadProductFromFile(pathCategory);
+                                        store.loadProductFromFile(pathCart);
                                         if(seStore.index.equalsIgnoreCase("Q")){
                                             break;
                                         }else {  
@@ -365,10 +392,11 @@ public class SEStore {
                                     while(true) {
                                         store.printAllCategories();
                                         seStore.showOptions_dis2();
-                    
+                                        
                                         // Load File
                                         store.loadProductFromFile(pathProduct);
                                         store.loadProductFromFile(pathCategory);
+                                        store.loadProductFromFile(pathCart);
                                         if(seStore.index.equalsIgnoreCase("Q")){
                                             break;
                                         }else {  
@@ -393,7 +421,129 @@ public class SEStore {
                                         }
                                     }
                                 }else if(seStore.choose == 2){
-                                    
+                                    // Load File
+                                    store.loadProductFromFile(pathProduct);
+                                    store.loadProductFromFile(pathCategory);
+                                    store.loadProductFromFile(pathCart);
+
+                                    store.printAllProducts();
+                                    seStore.order_options();
+
+                                    String userID_current = userManager.users[i].getMemberId();
+
+                                    while (true) {
+                                        seStore.input_orderOptions();
+
+                                        if (seStore.input.hasNextLine()) {
+                                            seStore.index += " " + seStore.input.nextLine();
+                                        }
+
+                                        System.out.println(seStore.index);
+                                        store.loadProductFromFile(pathCart);
+                                        boolean invalid = false;
+                                        String[] parts = seStore.index.split("\\s+");
+
+                                        if(parts.length == 1){
+                                            if(parts[0].equalsIgnoreCase("Q")){
+                                                System.out.println("Your cart has been saved!");
+                                                break;
+                                            }else if(parts[0].equalsIgnoreCase("1")){
+                                                seStore.showExample();
+                                            }else if(parts[0].equalsIgnoreCase("2")){
+                                                store.printAllProducts();
+                                            }
+                                        }else if(parts.length == 2){
+                                            String productID_choose = store.products[Integer.parseInt(parts[0])-1].getId();
+                                            boolean newOrder = true;
+                                            int index_Order = -1;
+
+                                            int index = 0;
+                                            for (Cart item : store.carts) {
+                                                if(item.getuserID().equalsIgnoreCase(userID_current) && item.getIdProduct().equalsIgnoreCase(productID_choose)){
+                                                    newOrder = false;
+                                                    index_Order = index;
+                                                }
+                                                index++;
+                                            }
+
+                                            if(parts[1].charAt(0) == '+'){
+                                                int quantity_input = Integer.parseInt(parts[1].substring(1));
+                                                if(newOrder){
+                                                    if(store.products[Integer.parseInt(parts[0])-1].getQuantity() - quantity_input < 0){
+                                                        invalid = true;
+                                                    }else {
+                                                        store.creatNewOrder(userID_current, productID_choose, quantity_input);
+
+                                                        store.products[Integer.parseInt(parts[0])-1].setQuantity(store.products[Integer.parseInt(parts[0])-1].getQuantity() - quantity_input);
+                                                        store.updateFile_edit();
+                                                    }
+                                                }else {
+                                                    if(store.products[Integer.parseInt(parts[0])-1].getQuantity() - quantity_input < 0){
+                                                        invalid = true;
+                                                    }else {
+                                                        store.carts[index_Order].setQuantity(store.carts[index_Order].getQuantity() + quantity_input);
+                                                        store.updateFile_Order();
+
+                                                        store.products[Integer.parseInt(parts[0])-1].setQuantity(store.products[Integer.parseInt(parts[0])-1].getQuantity() - quantity_input);
+                                                        store.updateFile_edit();
+                                                    }
+                                                }
+                                            }else if(parts[1].charAt(0) == '-'){
+                                                int quantity_input = Integer.parseInt(parts[1].substring(1));
+                                                if(!newOrder){
+                                                    if(store.carts[index_Order].getQuantity() - quantity_input <= 0){
+                                                        int quantity_current = store.carts[index_Order].getQuantity();
+                                                        
+                                                        store.carts[index_Order].setQuantity(store.carts[index_Order].getQuantity() - quantity_input);
+                                                        store.updateFile_Order();
+
+                                                        store.products[Integer.parseInt(parts[0])-1].setQuantity(store.products[Integer.parseInt(parts[0])-1].getQuantity() + quantity_current);
+                                                        store.updateFile_edit();
+                                                    }else {
+                                                        store.carts[index_Order].setQuantity(store.carts[index_Order].getQuantity() - quantity_input);
+                                                        store.updateFile_Order();
+    
+                                                        store.products[Integer.parseInt(parts[0])-1].setQuantity(store.products[Integer.parseInt(parts[0])-1].getQuantity() + quantity_input);
+                                                        store.updateFile_edit();
+                                                    }
+                                                }else {
+                                                    invalid = true;
+                                                }
+                                            }else if(Integer.parseInt(parts[1]) >= 0){
+                                                int quantity_input = Integer.parseInt(parts[1]);
+
+                                                if(newOrder){
+                                                    if(store.products[Integer.parseInt(parts[0])-1].getQuantity() - quantity_input < 0){
+                                                        invalid = true;
+                                                    }else {
+                                                        store.creatNewOrder(userID_current, productID_choose, quantity_input);
+    
+                                                        store.products[Integer.parseInt(parts[0])-1].setQuantity(store.products[Integer.parseInt(parts[0])-1].getQuantity() - quantity_input);
+                                                        store.updateFile_edit();
+                                                    }
+                                                }else {
+                                                    int quantity_current = store.carts[index_Order].getQuantity() + store.products[Integer.parseInt(parts[0])-1].getQuantity();
+
+                                                    if(quantity_current - quantity_input < 0){
+                                                        invalid = true;
+                                                    }else {
+                                                        store.carts[index_Order].setQuantity(quantity_input);
+                                                        store.updateFile_Order();
+
+                                                        store.products[Integer.parseInt(parts[0])-1].setQuantity(quantity_current - quantity_input);
+                                                        store.updateFile_edit();
+                                                    }
+                                                }
+                                            }else {
+                                                invalid = true;
+                                            }
+                                        }else {
+                                            invalid = true;
+                                        }
+                                        if(invalid){
+                                            System.out.println("Your input is invalid!");
+                                        }
+                                    }
                                 }
                                 else if(seStore.choose == 3){
                                     break;
@@ -401,7 +551,7 @@ public class SEStore {
                             }
                         }
                         /////< OTHER ROLE (End) >/////
-                    }  
+                    }   
                 }
             }else if(seStore.choose == 2){
                 System.out.printf("===== SE STORE =====\nThank you for using our service :3");
