@@ -1,11 +1,7 @@
 /************************************************************************************/ 
-/* Program Assignment: SE STORE #9
-/* Student ID: 66160237
-/* Student Name: Wanasart Nianthasat
-/* Date: 10/10/2024
-/* Description: เพิ่มระบบ Order สินค้า
+/* Program Assignment: SE STORE #9 V2
 /*************************************************************************************/
-package SE_STORE_9;
+package SE_STORE_9_V2;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
