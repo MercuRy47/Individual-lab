@@ -262,4 +262,31 @@ public class StoreManager {
             e.printStackTrace();
         }
     }
+
+    public void searchByName(String name){
+        String format = "%-5s %-12s %-10s %-10s%n";
+        System.out.printf("====================\n");
+        ArrayList<Product> searchFound = new ArrayList<>();
+        int index = 1;
+        int notFound = -1;
+
+        for(Product product: products){
+            int isHave = product.getName().toLowerCase().indexOf(name.toLowerCase());
+            if(isHave != -1){
+                searchFound.add(product);
+                notFound++;
+            }
+        }
+
+        if(notFound == -1){
+            System.out.println("Sorry Product Not found");
+        }else {
+            System.out.printf(format, "#", "Name", "Price (฿)", "Quantity");
+            for (Product product : searchFound) {
+                System.out.printf("%-5d %-12s %-10.2f %-10d%n", index, product.getName(), product.getPrice()*34, product.getQuantity());
+                index++;
+            }
+        }
+        System.out.println("====================");
+    }
 }

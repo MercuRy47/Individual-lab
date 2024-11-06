@@ -3,7 +3,7 @@
 /* Student ID: 66160237
 /* Student Name: Wanasart Nianthasat
 /* Date: 5/11/2024
-/* Description: 
+/* Description: เพิ่มระบบ ยืนยันการสั่งซื้อสินค้า
 /*************************************************************************************/
 package SE_STORE_10;
 
@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class SEStore {
     private int choose, num, chooseSort;
-    private String index, email, tel, firstName, lastName, emailLogin, passwordLogin, role, fullName, nameProduct, quantity;
+    private String index, email, tel, firstName, lastName, emailLogin, passwordLogin, role, fullName, nameProduct, quantity, searchName;
     private Scanner input;
 
     // แสดง Display ตัวเลือกหน้า login
@@ -68,13 +68,13 @@ public class SEStore {
     public void showOptions_dis1() { 
         this.input = new Scanner(System.in);
         while (true) {
-            System.out.printf("1. Show Category\n2. Order Product\n3. Logout\n====================\nSelect (1-3) : ");
+            System.out.printf("1. Show Category\n2. Order Product\n3. Search Product\n4. Logout\n====================\nSelect (1-4) : ");
             try {
                 this.choose = input.nextInt();
-                if (this.choose == 1 || this.choose == 2 || this.choose == 3)  {
+                if (this.choose == 1 || this.choose == 2 || this.choose == 3 || this.choose == 4)  {
                     break;  // ออกจากลูปเมื่อกรอกข้อมูลถูกต้อง
                 } else {
-                    System.out.println("Error: Please enter 1 or 3.");
+                    System.out.println("Error: Please enter 1 or 4.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Error: You must enter a valid number.");
@@ -142,7 +142,7 @@ public class SEStore {
 
     public void chooseProduct_dis(){
         StoreManager storeManager = new StoreManager();
-        storeManager.loadProductFromFile("Individual Lab/SE_STORE_9/PRODUCT.txt");
+        storeManager.loadProductFromFile("SE_STORE_9/PRODUCT.txt");
         System.out.println("Type Product Number, You want to edit or Press Q to Exit");
         System.out.printf("Select (1-%d) : ", storeManager.products.length);
         this.index = input.next();
@@ -172,6 +172,7 @@ public class SEStore {
         System.out.println("Enter the product number followed by the quantity.");
         System.out.println("1. How to Order");
         System.out.println("2. List Products");
+        System.out.println("3. My Cart");
         System.out.println("Q. Exit");
     }
 
@@ -190,12 +191,20 @@ public class SEStore {
         System.out.println("\t- to reduce items: 1 -50 (Removes 50 chips)");
     }
 
+    public void showMyCart(String userID){
+        OrderManager orderManager = new OrderManager();
+        orderManager.loadOrderFromFile();
+        System.out.println("====================\nMy Cart\n====================");
+        orderManager.printAllOrder(userID);
+
+    }
     
     /////<----- Main Head ----->/////
     public static void main(String[] args) {
         SEStore seStore = new SEStore();        
         StoreManager store = new StoreManager();
         UserManager userManager = new UserManager();
+        OrderManager orderManager = new OrderManager();
 
         // Path
         String pathProduct = "Individual Lab/SE_STORE_10/PRODUCT.txt";
@@ -430,6 +439,7 @@ public class SEStore {
 
                                     String userID_current = userManager.users[i].getMemberId();
 
+                                    outerloop:
                                     while (true) {
                                         seStore.input_orderOptions();
 
@@ -450,6 +460,44 @@ public class SEStore {
                                                 seStore.showExample();
                                             }else if(parts[0].equalsIgnoreCase("2")){
                                                 store.printAllProducts();
+                                            }else if(parts[0].equalsIgnoreCase("3")){
+                                                // My Cart
+                                                seStore.showMyCart(userID_current);
+                                                
+                                                System.out.println("1. Checkout\n2. Back");
+                                                while (true) {
+                                                    seStore.input_orderOptions();
+                                                    
+                                                    if(seStore.index.equalsIgnoreCase("1")){
+                                                        orderManager.loadOrderFromFile();
+                                                        orderManager.printOrderCheckout(userID_current);
+
+                                                        while (true) {
+                                                            System.out.println("1. Confirm\n2. Cancel");
+                                                            seStore.input_orderOptions();
+
+                                                            if(seStore.index.equalsIgnoreCase("1")){
+                                                                System.out.println("Thank you for your purchase");
+                                                                orderManager.creatNewOrder(userID_current);
+                                                                break outerloop;
+
+                                                            }else if(seStore.index.equalsIgnoreCase("2")){
+                                                                System.out.println("====================\nAdd Something to Cart\n====================");
+                                                                store.printAllProducts();
+                                                                seStore.order_options();
+                                                                seStore.showMyCart(userID_current);
+                                                                System.out.println("1. Checkout\n2. Back");
+                                                                break;
+                                                            }
+                                                        }
+
+                                                    }else if(seStore.index.equalsIgnoreCase("2")){
+                                                        System.out.println("====================\nAdd Something to Cart\n====================");
+                                                        store.printAllProducts();
+                                                        seStore.order_options();
+                                                        break;
+                                                    }
+                                                }
                                             }
                                         }else if(parts.length == 2){
                                             String productID_choose = store.products[Integer.parseInt(parts[0])-1].getId();
@@ -545,6 +593,13 @@ public class SEStore {
                                     }
                                 }
                                 else if(seStore.choose == 3){
+                                    System.out.println("====================\nSearch Product\n====================");
+                                    System.out.print("Type Product Name: ");
+                                    seStore.searchName = seStore.input.next();
+
+                                    store.searchByName(seStore.searchName);
+                                }
+                                else if(seStore.choose == 4){
                                     break;
                                 }
                             }

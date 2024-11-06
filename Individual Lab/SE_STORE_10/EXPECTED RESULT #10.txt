@@ -1,0 +1,140 @@
+Display#1 | หลังจาก login (role regular/silver/gold)	
+	===== SE STORE =====
+	Hello, Y. Kittipoom (REGULAR)
+	Email: ki***@bs***
+	Phone: 064-442-0234
+	You have 20 Point
+	====================
+	1. Show Category
+	2. Order Product
+	3. Search Product
+	4. Logout
+	====================
+	Select (1-4) :
+
+Display#2 | หลังเลือกเมนู 3
+	====================
+	Search Product
+	====================
+	Type Product Name:
+	====================
+
+Display#3.1 | หลังกรอกข้อมูลค้นหาสินค้า เจอสินค้า
+	====================
+	Search Product
+	====================
+	Type Product Name: ch
+	====================
+	#	Name			Price (฿)		Quantity	
+	1	Chip			23.12		80
+	2	Chocolate		43.86		45
+	3	Cheese		183.6		55
+	====================
+	[แสดง Display#1]
+
+Display#3.2 | หลังกรอกข้อมูลค้นหาสินค้า ไม่เจอสินค้า
+	====================
+	Search Product
+	====================
+	Type Product Name: abc
+	====================
+	Sorry Product Not found
+	====================
+	[แสดง Display#1]
+
+Display#4 | Order Product
+	=========== SE STORE's Products ===========
+	#	Name	        	Price (฿)		Quantity
+	1	Chip	        	23.12	    	80
+	2	Chocolate		43.86	    	45
+	3	Candy	     33.66	    	75
+	4	Seaweed     	23.80	    	65
+	...			
+	n	Rubber	     10.88	    	65
+	===========================================	
+	Enter the product number followed by the quantity.	
+	1. How to Order
+	2. List Products
+	3. My Cart
+	Q. Exit
+	Enter :
+
+Display#5 | หลังเลือกเมนู 3. My Cart
+	====================
+	My Cart
+	====================
+	#	Name	        Quantity	Totals (฿)
+	1	Cake	        5			1938.00
+	2	Bread	   5			1341.30
+	===========================================	
+	Price: 3279.30 Baht
+	===========================================	
+	1. Checkout
+	2. Back
+	Enter : 
+
+Display#6.1 | หลังเลือกเมนู 3. My Cart และเลือก 1. Checkout
+	====================
+	Checkout
+	====================
+	#	Name	        Quantity	Totals (฿)
+	1	Cake	        5			1938.00
+	2	Bread	   5			1341.30
+	===========================================	
+	Price: 3279.30
+	Shipping Fee: 50.00
+	Total: 3329.30
+	===========================================	
+	1. Confirm
+	2. Cancel
+	Enter :
+
+Display#6.2 | หลังเลือกเมนู 3. My Cart และเลือก 2. Back
+	====================
+	Add Something to Cart
+	====================
+	[แสดง Display#4]
+
+Display#7.1 | หลังเลือกเมนู 3. My Cart และเลือก 1. Checkout และเลือก 1. Confirm
+	...
+	Enter : 1
+	Thank you for your purchase
+	[แสดง Display#1]
+
+Display#7.2 | หลังเลือกเมนู 3. My Cart และเลือก 1. Checkout และเลือก 2. Cancel
+	...
+	Enter : 2
+	====================
+	Add Something to Cart
+	====================
+	[แสดง Display#4]
+
+
+คำอธิบายเพิ่มเติม
+1. การเก็บข้อมูลลงไฟล์ ORDER.txt
+	- หากมีการสั่งซื้อสินค้า ให้เก็บข้อมูลลงไฟล์ ORDER.txt โดยมีรูปแบบดังนี้
+		[OrderID]	[CustomerID]	[ProductID]	[Quantity]	[PriceOnOrder]
+		8001		9013		1026		5		$11.40
+		8001		9013		1027		5		$7.89
+	- หมายเหตุ
+		- OrderID คือ รหัส Order ที่ได้จากการสั่งซื้อครั้งก่อน + 1
+		- CustomerID คือ รหัสลูกค้าที่ login เข้ามา
+		- ProductID คือ รหัสสินค้าที่ลูกค้าสั่งซื้อ
+		- Quantity คือ จำนวนสินค้าที่สั่งซื้อ
+		- PriceOnOrder คือ ราคาสินค้า ขณะที่สั่งซื้อ
+
+2. การเก็บข้อมูลลงไฟล์ PRODUCT.txt
+	- หากมีการสั่งซื้อสินค้า ให้ลดจำนวนสินค้าในไฟล์ PRODUCT.txt โดยมีรูปแบบดังนี้
+		[ProductID]	[Name]		[Price]		[Quantity]
+		...
+		1026		Cake		$11.40		55
+		1027		Bread		$7.89		60
+		...
+	- หมายเหตุ
+		- ProductID คือ รหัสสินค้า
+		- Name คือ ชื่อสินค้า
+		- Price คือ ราคาสินค้า
+		- Quantity คือ จำนวนสินค้าที่เหลืออยู่
+
+3. การเก็บข้อมูลลงไฟล์ CART.txt
+	- หากมีการสั่งซื้อสินค้า ให้ลบข้อมูลในไฟล์ CART.txt ที่ลูกค้าคนนั้นเคยเลือกไว้
